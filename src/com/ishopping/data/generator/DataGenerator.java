@@ -7,22 +7,33 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Calendar;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 public class DataGenerator {
 
+	protected String sourceFileName;
+	protected String targetFileName;
+	protected String mapping;
+
+	DataGenerator(String sourceFileName, String targetFileName, String mapping) {
+		this.sourceFileName = sourceFileName;
+		this.targetFileName = targetFileName;
+		this.mapping = mapping;
+	}
+
 	/**
 	 * Read source json file from the package of com.ishopping.data.json
 	 * 
 	 * @return
 	 */
-	public static JSONObject getJson(String sourceFileName) {
+	public JSONObject getJson() {
 
 		String filePath = new File("").getAbsolutePath() + "/src/com/ishopping/data/generator/" + sourceFileName;
 
+		System.out.println("Read file: " + filePath);
+		
 		BufferedReader reader = null;
 		String jsonStr = "";
 		try {
@@ -47,19 +58,22 @@ public class DataGenerator {
 		}
 
 		JSONObject rootJson = (JSONObject) JSONObject.fromObject(jsonStr);
+		System.out.println("Get JSON from file successfully!");
 		return rootJson;
 	}
 
 	/**
 	 * generate final json data according to the mappings
 	 */
-	public static void generateData(JSONArray sourceArrays, String fileName, String mapping) {
+	public void generateData(JSONArray sourceArrays) {
+		
+		System.out.println("Start to generate JSON data...");
 
 		JSONObject mappingJson = JSONObject.fromObject(mapping);
 		FileWriter fileWritter = null;
 		try {
 
-			File file = new File(fileName);
+			File file = new File(targetFileName);
 			if (file.exists()) {
 				file.delete();
 			}
@@ -94,50 +108,11 @@ public class DataGenerator {
 				e.printStackTrace();
 			}
 		}
+		
+		System.out.println("Generate data successfully!");
 	}
 
-	// set specific configurations and actions for categories
-	private static void generateDataForCategory(JSONObject rootDataJSON) {
-		String categoryFileName = "categories.json";
-		String mappingForCategory = "{'categoryId': 'id', 'name': 'name'}";
-		JSONArray categories = rootDataJSON.getJSONArray("categories");
-		generateData(categories, categoryFileName, mappingForCategory);
+	public void specificAction(JSONObject targetJSON, JSONObject sourceJSON) {
 	}
 
-	private static void specificActionForCategory(JSONObject targetJSON, JSONObject sourceJSON) {
-		targetJSON.put("categoryId", sourceJSON.get("id").toString().substring(1));
-	}
-
-	// set specific configurations and actions for goods
-	private static void generateDataForGood(JSONObject rootDataJSON) {
-		String goodFileName = "goods.json";
-		String mappingForGood = "{'categoryId': 'id', 'currPrice': 'price', 'price': 'market_price', 'goodsId': 'id', 'name': 'name', 'photo': 'img',"
-				+ "'stock': 'store_nums', 'desc': null, 'brandName': 'brand_name', 'specification': 'specifics', 'safeDay': 'safe_day', 'tags': 'tag_ids',"
-				+ "'registerTime': null, 'isNew': null, 'onSale': null }";
-		JSONArray products = rootDataJSON.getJSONObject("products").getJSONArray("a82");
-		generateData(products, goodFileName, mappingForGood);
-	}
-
-	private static void specificActionForGood(JSONObject targetJSON, JSONObject sourceJSON) {
-		String currentTime = Calendar.getInstance().getTime().toString();
-		targetJSON.put("desc", "");
-		targetJSON.put("registerTime", currentTime);
-		targetJSON.put("isNew", false);
-		targetJSON.put("onSale", false);
-	}
-
-	public static void specificAction(JSONObject targetJSON, JSONObject sourceJSON) {
-		// for goods
-		specificActionForGood(targetJSON, sourceJSON);
-	}
-
-	public static void main(String[] args) {
-
-		String sourceFileName = "supermarket.json";
-		JSONObject rootDataJSON = (JSONObject) getJson(sourceFileName).get("data");
-
-		// for goods
-		generateDataForGood(rootDataJSON);
-
-	}
 }
