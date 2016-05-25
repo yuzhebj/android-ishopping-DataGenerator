@@ -27,14 +27,20 @@ public class GoodsGenerator extends DataGenerator {
 		// if the property value cannot be set directly by the value in source
 		// file, then set the value in the mapping (keyNameInSourceFile) to null
 
-		String mapping = "{'categoryId': 'id', 'currPrice': 'price', 'price': 'market_price', 'goodsId': 'id', 'name': 'name', 'photo': 'img',"
+		String mapping = "{'categoryId': 'category_id', 'currPrice': 'price', 'price': 'market_price', 'goodsId': 'id', 'name': 'name', 'photo': 'img',"
 				+ "'stock': 'store_nums', 'desc': null, 'brandName': 'brand_name', 'specification': 'specifics', 'shelfLife': 'safe_day', 'tags': 'tag_ids',"
 				+ "'registerTime': null, 'isNew': null, 'onSale': null }";
 
 		DataGenerator generator = new GoodsGenerator("supermarket.json", "goods.json", mapping);
 
 		JSONObject rootDataJSON = (JSONObject) generator.getJson().get("data");
-		JSONArray products = rootDataJSON.getJSONObject("products").getJSONArray("a82");
+		JSONObject tmpProducts = rootDataJSON.getJSONObject("products");
+		JSONArray products = new JSONArray();
+		for (Object o : tmpProducts.keySet()) {
+			System.out.println("category : " + o.toString());
+			JSONArray array = tmpProducts.getJSONArray(o.toString());
+			products.addAll(array);
+		}
 
 		generator.generateData(products);
 	}
