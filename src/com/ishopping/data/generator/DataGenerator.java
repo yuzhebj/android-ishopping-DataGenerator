@@ -19,9 +19,9 @@ public class DataGenerator {
 
 	protected String sourceFileName;
 	protected String targetFileName;
-	protected String mapping;
+	protected JSONObject mapping;
 
-	DataGenerator(String sourceFileName, String targetFileName, String mapping) {
+	DataGenerator(String sourceFileName, String targetFileName, JSONObject mapping) {
 		this.sourceFileName = sourceFileName;
 		this.targetFileName = targetFileName;
 		this.mapping = mapping;
@@ -73,7 +73,6 @@ public class DataGenerator {
 
 		System.out.println("Start to generate JSON data...");
 
-		JSONObject mappingJson = JSONObject.fromObject(mapping);
 		FileWriter fileWritter = null;
 		try {
 
@@ -91,8 +90,8 @@ public class DataGenerator {
 				JSONObject sourceJSON = sourceArrays.getJSONObject(i);
 				JSONObject targetJSON = new JSONObject();
 
-				for (Object targetKey : mappingJson.keySet()) {
-					String sourceKey = mappingJson.get(targetKey).toString();
+				for (Object targetKey : mapping.keySet()) {
+					String sourceKey = mapping.get(targetKey).toString();
 					targetJSON.put(targetKey, sourceJSON.get(sourceKey));
 				}
 

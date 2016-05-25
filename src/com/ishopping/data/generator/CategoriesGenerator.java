@@ -5,10 +5,11 @@ import net.sf.json.JSONObject;
 
 public class CategoriesGenerator extends DataGenerator {
 
-	public CategoriesGenerator(String sourceFileName, String targetFileName, String mapping) {
+	public CategoriesGenerator(String sourceFileName, String targetFileName, JSONObject mapping) {
 		super(sourceFileName, targetFileName, mapping);
 	}
 
+	// Step 3
 	@Override
 	public void specificAction(JSONObject targetJSON, JSONObject sourceJSON) {
 		targetJSON.put("categoryId", sourceJSON.get("id").toString().substring(1));
@@ -16,13 +17,23 @@ public class CategoriesGenerator extends DataGenerator {
 
 	public static void main(String[] args) {
 
-		String mapping = "{'categoryId': null, 'name': 'name'}";
+		// Step 1
+		String targetFileName = "categories.json";
+		String sourceFileName = "supermarket.json";
 
-		DataGenerator generator = new CategoriesGenerator("supermarket.json", "categories.json", mapping);
+		// Step 2 - {target : source}
+		JSONObject keyMapping = new JSONObject();
+		keyMapping.put("name", "name");
+		keyMapping.put("categoryId", null);
 
-		JSONObject rootDataJSON = (JSONObject) generator.getJson().get("data");
-		JSONArray categories = rootDataJSON.getJSONArray("categories");
+		DataGenerator generator = new CategoriesGenerator(sourceFileName, targetFileName, keyMapping);
 
-		generator.generateData(categories);
+		JSONObject rootJSON = (JSONObject) generator.getJson();
+		JSONArray inputArray = new JSONArray();
+
+		// Step 4
+		inputArray = rootJSON.getJSONObject("data").getJSONArray("categories");
+
+		generator.generateData(inputArray);
 	}
 }

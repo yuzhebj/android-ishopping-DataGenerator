@@ -5,10 +5,12 @@ import net.sf.json.JSONObject;
 
 public class GoodsGenerator extends DataGenerator {
 
-	public GoodsGenerator(String sourceFileName, String targetFileName, String mapping) {
+	public GoodsGenerator(String sourceFileName, String targetFileName, JSONObject mapping) {
 		super(sourceFileName, targetFileName, mapping);
 	}
 
+	// Step 3 : override specificAction to set values to some specific
+	// properties that cannot be set directly by the value in source file.
 	@Override
 	public void specificAction(JSONObject targetJSON, JSONObject sourceJSON) {
 		String currentTime = getCurrentTime();
@@ -18,28 +20,56 @@ public class GoodsGenerator extends DataGenerator {
 		targetJSON.put("onSale", false);
 	}
 
+	/**
+	 * Generally 4 steps to configure a new generator.
+	 */
 	public static void main(String[] args) {
 
-		// mapping: { keyNameInTargetFile : keyNameInSourceFile}
+		// Step 1 : set target and source file name respectively.
+		String targetFileName = "goods.json";
+		String sourceFileName = "supermarket.json";
+
+		// Step 2 : set key mapping relations between target and source json
+		// files - {target : source}
 		//
-		// if the property value cannot be set directly by the value in source
-		// file, then set the value in the mapping (keyNameInSourceFile) to null
+		// If one property value cannot be set directly by the value in source
+		// file (need extra processes),
+		// then, do not set the mapping, or set the value to null (these
+		// property values need to be set in specificAction function)
+		JSONObject keyMapping = new JSONObject();
+		keyMapping.put("categoryId", "category_id");
+		keyMapping.put("currPrice", "price");
+		keyMapping.put("price", "market_price");
+		keyMapping.put("goodsId", "id");
+		keyMapping.put("name", "name");
+		keyMapping.put("photo", "img");
+		keyMapping.put("stock", "store_nums");
+		keyMapping.put("brandName", "brand_name");
+		keyMapping.put("specification", "specifics");
+		keyMapping.put("shelfLife", "safe_day");
+		keyMapping.put("tags", "tag_ids");
+		// keyMapping.put("desc", null);
+		// keyMapping.put("registerTime", null);
+		// keyMapping.put("isNew", null);
+		// keyMapping.put("onSale", null);
 
-		String mapping = "{'categoryId': 'category_id', 'currPrice': 'price', 'price': 'market_price', 'goodsId': 'id', 'name': 'name', 'photo': 'img',"
-				+ "'stock': 'store_nums', 'desc': null, 'brandName': 'brand_name', 'specification': 'specifics', 'shelfLife': 'safe_day', 'tags': 'tag_ids',"
-				+ "'registerTime': null, 'isNew': null, 'onSale': null }";
+		// Using the constructor and the settings to create a new generator.
+		DataGenerator generator = new GoodsGenerator(sourceFileName, targetFileName, keyMapping);
 
-		DataGenerator generator = new GoodsGenerator("supermarket.json", "goods.json", mapping);
+		// Using getJson() function to get root JSONObject from the source file.
+		// ** the root element in source file SHOULD be a JSONObject **
+		JSONObject rootJSON = (JSONObject) generator.getJson();
+		JSONArray inputArray = new JSONArray();
 
-		JSONObject rootDataJSON = (JSONObject) generator.getJson().get("data");
-		JSONObject tmpProducts = rootDataJSON.getJSONObject("products");
-		JSONArray products = new JSONArray();
-		for (Object o : tmpProducts.keySet()) {
+		// Step 4 : extract json array from the root JSONObject as input.
+		JSONObject products = rootJSON.getJSONObject("data").getJSONObject("products");
+		for (Object o : products.keySet()) {
 			System.out.println("category : " + o.toString());
-			JSONArray array = tmpProducts.getJSONArray(o.toString());
-			products.addAll(array);
+			JSONArray array = products.getJSONArray(o.toString());
+			inputArray.addAll(array);
 		}
 
-		generator.generateData(products);
+		// Using generateData() function to generate target json file as output.
+		generator.generateData(inputArray);
 	}
 }
