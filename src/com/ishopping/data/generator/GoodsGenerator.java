@@ -28,7 +28,7 @@ public class GoodsGenerator extends DataGenerator {
 		// file, then set the value in the mapping (keyNameInSourceFile) to null
 
 		String mapping = "{'categoryId': 'id', 'currPrice': 'price', 'price': 'market_price', 'goodsId': 'id', 'name': 'name', 'photo': 'img',"
-				+ "'stock': 'store_nums', 'desc': null, 'brandName': 'brand_name', 'specification': 'specifics', 'safeDay': 'safe_day', 'tags': 'tag_ids',"
+				+ "'stock': 'store_nums', 'desc': null, 'brandName': 'brand_name', 'specification': 'specifics', 'shelfLife': 'safe_day', 'tags': 'tag_ids',"
 				+ "'registerTime': null, 'isNew': null, 'onSale': null }";
 
 		DataGenerator generator = new GoodsGenerator("supermarket.json", "goods.json", mapping);
