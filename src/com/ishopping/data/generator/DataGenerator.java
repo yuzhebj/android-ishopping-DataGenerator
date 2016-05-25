@@ -7,11 +7,15 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 public class DataGenerator {
+
+	public static final String TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
 	protected String sourceFileName;
 	protected String targetFileName;
@@ -33,7 +37,7 @@ public class DataGenerator {
 		String filePath = new File("").getAbsolutePath() + "/src/com/ishopping/data/generator/" + sourceFileName;
 
 		System.out.println("Read file: " + filePath);
-		
+
 		BufferedReader reader = null;
 		String jsonStr = "";
 		try {
@@ -66,7 +70,7 @@ public class DataGenerator {
 	 * generate final json data according to the mappings
 	 */
 	public void generateData(JSONArray sourceArrays) {
-		
+
 		System.out.println("Start to generate JSON data...");
 
 		JSONObject mappingJson = JSONObject.fromObject(mapping);
@@ -108,11 +112,21 @@ public class DataGenerator {
 				e.printStackTrace();
 			}
 		}
-		
+
 		System.out.println("Generate data successfully!");
 	}
 
 	public void specificAction(JSONObject targetJSON, JSONObject sourceJSON) {
+	}
+
+	public String getCurrentTime() {
+		SimpleDateFormat sdf = new SimpleDateFormat(TIME_FORMAT);
+		return sdf.format(new Date());
+	}
+
+	public String formatTime(Date date) {
+		SimpleDateFormat sdf = new SimpleDateFormat(TIME_FORMAT);
+		return sdf.format(date);
 	}
 
 }

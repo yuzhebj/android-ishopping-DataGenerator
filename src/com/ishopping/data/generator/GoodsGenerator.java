@@ -1,7 +1,5 @@
 package com.ishopping.data.generator;
 
-import java.util.Calendar;
-
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -13,7 +11,7 @@ public class GoodsGenerator extends DataGenerator {
 
 	@Override
 	public void specificAction(JSONObject targetJSON, JSONObject sourceJSON) {
-		String currentTime = Calendar.getInstance().getTime().toString();
+		String currentTime = getCurrentTime();
 		targetJSON.put("desc", "");
 		targetJSON.put("registerTime", currentTime);
 		targetJSON.put("isNew", false);
