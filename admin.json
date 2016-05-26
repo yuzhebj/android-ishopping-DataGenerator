@@ -1,0 +1,11 @@
+{
+	admins : [ {
+		"adminId" : "001",
+		"password" : "passw0rd",
+		"username" : "Admin 1"
+	}, {
+		"adminId" : "002",
+		"password" : "passw0rd",
+		"username" : "Admin 2"
+	} ]
+}
