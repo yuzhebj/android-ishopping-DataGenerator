@@ -1,1 +1,43 @@
-[{"categoryId":"106","name":"优选水果"},{"categoryId":"151","name":"卤味熟食"},{"categoryId":"99","name":"海鲜肉食"},{"categoryId":"152","name":"乳制品"},{"categoryId":"147","name":"饮料酒水"},{"categoryId":"136","name":"进口专区"},{"categoryId":"82","name":"休闲零食"},{"categoryId":"143","name":"面包速食"},{"categoryId":"135","name":"粮油米面"},{"categoryId":"158","name":"时蔬肉蛋"},{"categoryId":"96","name":"副食调味"},{"categoryId":"141","name":"整箱购"},{"categoryId":"137","name":"冰淇淋"},{"categoryId":"134","name":"生活用品"}]
+[{
+	"categoryId": "106",
+	"name": "优选水果"
+},{
+	"categoryId": "151",
+	"name": "卤味熟食"
+},{
+	"categoryId": "99",
+	"name": "海鲜肉食"
+},{
+	"categoryId": "152",
+	"name": "乳制品"
+},{
+	"categoryId": "147",
+	"name": "饮料酒水"
+},{
+	"categoryId": "136",
+	"name": "进口专区"
+},{
+	"categoryId": "82",
+	"name": "休闲零食"
+},{
+	"categoryId": "143",
+	"name": "面包速食"
+},{
+	"categoryId": "135",
+	"name": "粮油米面"
+},{
+	"categoryId": "158",
+	"name": "时蔬肉蛋"
+},{
+	"categoryId": "96",
+	"name": "副食调味"
+},{
+	"categoryId": "141",
+	"name": "整箱购"
+},{
+	"categoryId": "137",
+	"name": "冰淇淋"
+},{
+	"categoryId": "134",
+	"name": "生活用品"
+}]
