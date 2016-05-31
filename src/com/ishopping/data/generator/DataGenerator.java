@@ -130,10 +130,8 @@ public class DataGenerator {
 	}
 
 	public BigDecimal parseToFloat(String str) {
-		int scale = 2;
-		int roundingMode = 4;
 		BigDecimal bd = new BigDecimal(Double.parseDouble(str));
-		bd = bd.setScale(scale, roundingMode);
+		bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
 		return bd;
 	}
 
