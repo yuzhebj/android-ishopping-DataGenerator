@@ -7,6 +7,7 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -126,6 +127,14 @@ public class DataGenerator {
 	public String formatTime(Date date) {
 		SimpleDateFormat sdf = new SimpleDateFormat(TIME_FORMAT);
 		return sdf.format(date);
+	}
+
+	public BigDecimal parseToFloat(String str) {
+		int scale = 2;
+		int roundingMode = 4;
+		BigDecimal bd = new BigDecimal(Double.parseDouble(str));
+		bd = bd.setScale(scale, roundingMode);
+		return bd;
 	}
 
 }
